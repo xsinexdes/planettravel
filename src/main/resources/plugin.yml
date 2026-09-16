@@ -1,0 +1,43 @@
+name: PlanetTravel
+version: 1.1.0
+main: com.planettravel.PlanetTravel
+api-version: '1.21'
+author: TuServidor
+description: Viaje entre el mundo "espacio" y mundos-planeta, con entorno, temperatura y atmosferas configurables.
+
+# CoreNaves aun no existe / no esta instalado: se declara como softdepend para que,
+# cuando exista, Bukkit lo cargue antes que este plugin y podamos engancharnos a su API
+# mediante el ServicesManager. Si no esta presente, PlanetTravel sigue arrancando
+# en "modo sin CoreNaves" (ver config.yml -> modo-sin-corenaves).
+softdepend: [CoreNaves]
+
+commands:
+  planeta:
+    description: Administra los planetas configurados
+    usage: |
+      /planeta crear <id> <mundoPlaneta> <radio>
+      /planeta editar <id> <campo> <valores...>
+      /planeta gui [id]
+      /planeta listar
+      /planeta teletransportar <id> [jugador]
+      /planeta borrar <id>
+      /planeta recargar
+      /planeta validar
+    permission: planettravel.admin
+    permission-message: No tienes permiso para administrar planetas.
+  planetas:
+    description: Abre el mapa estelar
+    usage: /planetas
+    aliases: [mapaestelar, starmap]
+    permission: planettravel.usar
+    permission-message: No tienes permiso para usar el mapa estelar.
+
+permissions:
+  planettravel.admin:
+    description: Permite administrar los planetas de PlanetTravel
+    default: op
+    children:
+      planettravel.usar: true
+  planettravel.usar:
+    description: Permite abrir el mapa estelar
+    default: true
