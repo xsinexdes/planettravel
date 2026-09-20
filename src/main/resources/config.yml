@@ -1,0 +1,234 @@
+# ===========================================================
+#  PlanetTravel - configuracion principal
+# ===========================================================
+
+# Nombre del mundo "espacio" donde flotan las esferas-planeta
+mundo-espacio: "espacio"
+
+# Si CoreNaves NO esta instalado, el plugin puede funcionar en modo de pruebas:
+# en vez de mover la nave completa, mueve solo al jugador que la "pilota".
+modo-sin-corenaves: true
+
+# Cada cuantos ticks (20 ticks = 1 segundo) se comprueba la posicion de los
+# pilotos para ver si entraron en la esfera de un planeta o superaron la
+# altura de despegue.
+intervalo-comprobacion-ticks: 10
+
+# Cooldown (segundos) tras cada teletransporte de nave para evitar bucles.
+cooldown-teletransporte-segundos: 5
+
+# ALTURAS POR DEFECTO al crear un planeta nuevo con /planeta crear.
+# IMPORTANTE: un mundo de Minecraft normal llega hasta Y=320. Si pones valores
+# por encima de eso, las naves apareceran fuera del mundo y caeran al vacio.
+# Estos valores (310 / 315) funcionan en cualquier mundo estandar.
+# Solo sube de aqui si generaste tus mundos-planeta con altura extendida.
+altura-entrada-atmosferica-por-defecto: 310
+altura-despegue-por-defecto: 315
+
+# --- Feedback visual ---
+visual:
+  # Barra superior que muestra lo cerca que estas de la altura de escape
+  bossbar-altitud: true
+  # Texto sobre la barra de items con el planeta mas cercano y su distancia
+  actionbar-proximidad: true
+  # A partir de cuantos bloques se deja de mostrar el aviso de proximidad
+  distancia-aviso-proximidad: 600
+  # Anillo de particulas marcando el borde de la zona de aterrizaje
+  dibujar-borde-esfera: true
+  # A que distancia del borde empieza a dibujarse ese anillo
+  distancia-dibujar-borde: 250
+
+# --- Simulacion de entorno ---
+entorno:
+  # Cada cuantos ticks se aplica el entorno (casco, agua, temperatura...).
+  # 20 = una vez por segundo. Bajarlo lo hace mas reactivo pero mas caro.
+  intervalo-ticks: 20
+  # Presion (atm) a partir de la cual el aire aplasta: hace danio salvo que lleves
+  # el traje COMPLETO con resistencia a presion suficiente (1 atm = Tierra).
+  presion-peligrosa: 5.0
+  # Cuanto se desgasta la armadura con frio/calor extremo. 1.0 = normal, 0 = nunca.
+  # (La armadura nunca se rompe por esto: se queda con 1 de durabilidad.)
+  desgaste-armadura-multiplicador: 1.0
+
+# --- Seleccion del area de un planeta con el hacha ---
+seleccion:
+  # Se suma al radio visual para obtener el radio de DETECCION.
+  # Esfera de 150 + margen 30 = deteccion 180.
+  margen-deteccion: 30.0
+
+# ===========================================================
+#  TRAJES ESPACIALES (tiers)
+# ===========================================================
+# Cada planeta puede exigir un tier minimo (/planeta editar <id> tiercasco <n>).
+# Editalos comodamente en el juego: /espacio -> Trajes espaciales.
+#   proteccion-frio / proteccion-calor : grados que aporta CADA pieza puesta
+#   resistencia-presion                : atm que aguanta el traje completo
+#   custom-model-data                  : para tu resource pack (0 = ninguno)
+# Editar un tier cambia la proteccion de TODOS los trajes de ese tier ya entregados.
+trajes:
+  1:
+    nombre: "&fTraje Espacial Basico"
+    material: LEATHER
+    color: "CFD8DC"
+    custom-model-data: 0
+    proteccion-frio: 12.0
+    proteccion-calor: 12.0
+    resistencia-presion: 2.0
+  2:
+    nombre: "&bTraje Espacial Reforzado"
+    material: IRON
+    color: "FFFFFF"
+    custom-model-data: 0
+    proteccion-frio: 22.0
+    proteccion-calor: 22.0
+    resistencia-presion: 6.0
+  3:
+    nombre: "&6Traje Termico"
+    material: GOLDEN
+    color: "FFFFFF"
+    custom-model-data: 0
+    proteccion-frio: 35.0
+    proteccion-calor: 35.0
+    resistencia-presion: 20.0
+  4:
+    nombre: "&dTraje de Alta Presion"
+    material: DIAMOND
+    color: "FFFFFF"
+    custom-model-data: 0
+    proteccion-frio: 50.0
+    proteccion-calor: 50.0
+    resistencia-presion: 60.0
+  5:
+    nombre: "&5Traje de Exploracion Extrema"
+    material: NETHERITE
+    color: "FFFFFF"
+    custom-model-data: 0
+    proteccion-frio: 75.0
+    proteccion-calor: 75.0
+    resistencia-presion: 120.0
+
+# ===========================================================
+#  AJUSTES DEL ESPACIO (mundo "espacio")
+# ===========================================================
+# Se editan en el juego con /espacio. "activo: false" = el espacio se comporta
+# como siempre (sin asfixia, sin frio...). Actívalo cuando tengas tus bases listas.
+# Dentro de una BASE ESPACIAL (/espacio base crear ...) hay oxigeno y temperatura
+# agradable, y fuera rigen estas reglas.
+ajustes-espacio:
+  activo: false
+  prohibir-fuego-sin-oxigeno: true   # sin antorchas, fogatas, velas ni fuego donde no hay aire
+  mobs:
+    bloquear-normales: true          # solo aparecen los mobs de "permitidos"
+    permitidos: [ZOMBIE, SKELETON, STRAY, HUSK, ENDERMAN, PHANTOM]
+    con-casco: true                  # los mobs humanoides llevan casco de vidrio
+    material-casco: GLASS
+    probabilidad-soltar-casco: 0.02
+  ambiente:
+    estrellas: true                  # polvo estelar alrededor del jugador
+    densidad-estrellas: 6
+  tormentas-solares:
+    activas: false
+    intervalo-minutos: 20
+    duracion-segundos: 40
+    danio: 3.0
+    tier-proteccion: 3               # tier de traje completo que protege
+  entorno:                           # mismas reglas que un planeta (casco, tier, temperatura, gravedad, presion...)
+    requiere-casco: true
+    danio-sin-casco: 2.0
+    tier-casco: 2
+    requiere-traje-completo: true
+    desgaste-armadura: true
+    presion: 0.0
+    gravedad: 0.2
+    temperatura-activa: true
+    temperatura-base: -120.0
+    variacion-dia-noche: 0.0
+    variacion-por-altura: 0.0
+    umbral-frio: -60.0
+    umbral-calor: 80.0
+    danio-temperatura: 1.5
+    bloquear-clima: true
+    lluvia-permanente: false
+    bloquear-hora: true
+    hora-fija: 18000
+
+# ===========================================================
+#  PLANETAS
+# ===========================================================
+# Puedes editarlos a mano aqui, o mucho mas comodo:
+#   /planeta crear <id> <mundo> <radio>   -> crea uno en tu posicion
+#   /planeta gui                          -> mapa estelar
+#   /planeta gui <id>                     -> editor completo del entorno
+#
+# SOBRE LOS RADIOS:
+#   radio         = zona de DETECCION (invisible). Cuando la nave entra aqui,
+#                   se dispara el aterrizaje.
+#   radio-visual  = radio de la esfera de BLOQUES que hiciste con WorldEdit.
+#                   Debe ser MENOR que el de deteccion, o la nave chocara
+#                   contra los bloques antes de que salte el teletransporte.
+#   Ejemplo tipico: esfera WorldEdit de 150 -> radio-visual 150, radio 180.
+# ===========================================================
+
+planetas:
+  marte:
+    mundo: "planeta_marte"
+    nombre-visible: "Marte"
+    icono: "RED_CONCRETE"
+    descripcion: "Mundo desertico, frio y sin aire respirable."
+
+    espacio:
+      x: 1000.0
+      y: 100.0
+      z: 500.0
+      radio: 180.0          # zona de deteccion
+      radio-visual: 150.0   # esfera de bloques de WorldEdit
+
+    entrada-atmosferica-y: 310
+    spawn-planeta:
+      x: 0.0
+      y: 310.0
+      z: 0.0
+      yaw: 0.0
+      pitch: 0.0
+
+    altura-despegue-y: 315
+    salida-espacio:
+      x: 1250.0    # bien fuera del radio de deteccion (180), para no hacer bucle
+      y: 100.0
+      z: 500.0
+      yaw: 90.0
+      pitch: 0.0
+
+    entorno:
+      # --- Atmosfera ---
+      requiere-casco: true
+      material-casco: "TURTLE_HELMET"
+      requiere-traje-completo: false
+      danio-sin-casco: 1.0
+
+      # --- Agua ---
+      agua-toxica: false
+      danio-agua: 2.0
+      agua-envenena: false
+
+      # --- Gravedad (1.0 = Tierra) ---
+      gravedad: 0.38
+
+      # --- Temperatura ---
+      temperatura-activa: true
+      temperatura-base: -20.0
+      variacion-dia-noche: 25.0
+      variacion-por-altura: -2.0
+      umbral-calor: 45.0
+      umbral-frio: -40.0
+      danio-temperatura: 1.0
+      proteccion-por-pieza: 8.0
+
+      # --- Efectos permanentes (nombre: nivel) ---
+      efectos-permanentes: {}
+
+      # --- Ambiente ---
+      bloquear-clima: true
+      lluvia-permanente: false
+      bloquear-hora: false
+      hora-fija: 6000
